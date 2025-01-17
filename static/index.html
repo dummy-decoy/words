@@ -1,0 +1,81 @@
+<!doctype html>
+<html>
+    <head>
+        <meta name="viewport" content="width=device-width,initial-scale=1"/>
+        <title>words</title>
+        <style type="text/css">
+            body {
+                font-family: Arial, Helvetica, sans-serif;
+                max-width: 40em;
+            }
+            h1 {
+                display: block;
+                font-size: 1.5em;
+                font-weight: bold;
+            }
+            form {
+                text-align: center;
+            }
+            input[type="text"],
+            input[type="submit"],
+            select {
+                font-size: 16px;
+            }
+            .result-block {
+                margin-top: 1em;
+            }
+            .result-block-header {
+                font-weight: bold;
+                background-color: lightblue;
+                padding-left: 0.5em;
+                margin-bottom: 0.2em;
+            }
+            .result-block-content {
+                text-align: center;
+            }
+            .result-word {
+                margin-left: 1em;
+                margin-right: 1em;
+            }
+        </style>
+        <script type="text/javascript">
+            function on_search() {
+                var lang = document.getElementById('lang').value;
+                var letters = document.getElementById('letters').value;
+                document.getElementById('results').innerHTML = '';
+                
+                fetch('words?lang='+encodeURIComponent(lang)+'&letters='+encodeURIComponent(letters)).then(response => {
+                    return response.json();
+                }).then(data => {
+                    if ('letters' in data)
+                        document.getElementById('letters').value = data['letters'];
+                    
+                    if ('results' in data) {
+                        output = '';
+                        for (const length in data['results']) {
+                            output += '<div class="result-block">\n<div class="result-block-header">'+length+' letters</div>\n<div class="result-block-content">\n';
+                            for (const word of data['results'][length]) {
+                                output += '<span class="result-word">'+word+'</span>\n';
+                            }
+                            output += '</div>\n</div>\n';
+                        }
+                        document.getElementById('results').innerHTML = output;
+                    }
+                });
+            }
+        </script>
+    </head>
+    <body>
+        <h1>search words composed of:</h1>
+        <form action="javascript:on_search()">
+            <select id="lang" name="lang">
+                <option name="english">en</option>
+                <option name="french">fr</option>
+            </select>
+            <input id="letters" name="letters" type="text"/>
+            <input id="search" name="search" type="submit" value="search"/>
+        </form>
+        <div id="results">
+        </div>
+    </body>
+</html>
