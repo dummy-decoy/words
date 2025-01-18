@@ -17,9 +17,13 @@
                 text-align: center;
             }
             input[type="text"],
+            input[type="button"],
             input[type="submit"],
             select {
                 font-size: 16px;
+            }
+            #letters {
+                width: 8em;
             }
             .result-block {
                 margin-top: 1em;
@@ -39,6 +43,14 @@
             }
         </style>
         <script type="text/javascript">
+            function on_clear() {
+                document.getElementById('letters').value = '';
+                document.getElementById('results').innerHTML = '';
+                
+                const url = new URL(window.location.href);
+                url.searchParams.delete('letters');
+                history.pushState({}, '', url);
+            }
             function do_search(lang,letters) {
                 document.getElementById('results').innerHTML = '';
                 
@@ -90,6 +102,7 @@
                 <option name="french" value="fr">fr</option>
             </select>
             <input id="letters" name="letters" type="text"/>
+            <input id="clear" type="button" onclick="on_clear()" value="&times;"/>
             <input id="search" name="search" type="submit" value="search"/>
         </form>
         <div id="results">
