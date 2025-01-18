@@ -39,9 +39,7 @@
             }
         </style>
         <script type="text/javascript">
-            function on_search() {
-                var lang = document.getElementById('lang').value;
-                var letters = document.getElementById('letters').value;
+            function do_search(lang,letters) {
                 document.getElementById('results').innerHTML = '';
                 
                 fetch('words?lang='+encodeURIComponent(lang)+'&letters='+encodeURIComponent(letters)).then(response => {
@@ -60,17 +58,36 @@
                             output += '</div>\n</div>\n';
                         }
                         document.getElementById('results').innerHTML = output;
+                        
+                        const url = new URL(window.location.href);
+                        url.searchParams.set('lang', data['lang']);
+                        url.searchParams.set('letters', data['letters']);
+                        history.pushState({}, '', url);
                     }
                 });
             }
+            function on_search() {
+                var lang = document.getElementById('lang').value;
+                var letters = document.getElementById('letters').value;
+                do_search(lang, letters);
+            }
+
+            function onload() {
+                query = URL.parse(window.location.href).searchParams;
+                if (query.has('lang'))
+                    document.getElementById('lang').value = query.get('lang');
+                if (query.has('letters'))
+                    do_search(query.get('lang')||'en',query.get('letters'));
+            }
+            window.addEventListener('load', onload, false);
         </script>
     </head>
     <body>
         <h1>search words composed of:</h1>
         <form action="javascript:on_search()">
             <select id="lang" name="lang">
-                <option name="english">en</option>
-                <option name="french">fr</option>
+                <option name="english" value="en">en</option>
+                <option name="french" value="fr">fr</option>
             </select>
             <input id="letters" name="letters" type="text"/>
             <input id="search" name="search" type="submit" value="search"/>
