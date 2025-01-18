@@ -17,7 +17,10 @@ const read_dictionary = async function(path) {
 };
 
 var dictionaries = {};
-const dictionary_path = {'en': 'data/en.dict'};
+const dictionary_path = {
+    'en': 'data/en.dict',
+    'fr': 'data/fr.dict'
+};
 const get_dictionary = async function(lang) {
     if (!(lang in dictionary_path))
         throw new Error('dictionary not found for language '+lang);
