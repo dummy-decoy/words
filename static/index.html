@@ -50,6 +50,8 @@
                 const url = new URL(window.location.href);
                 url.searchParams.delete('letters');
                 history.pushState({}, '', url);
+
+                document.getElementById('letters').focus();
             }
             function do_search(lang,letters) {
                 document.getElementById('results').innerHTML = '';
@@ -84,14 +86,15 @@
                 do_search(lang, letters);
             }
 
-            function onload() {
+            function on_load() {
                 query = URL.parse(window.location.href).searchParams;
                 if (query.has('lang'))
                     document.getElementById('lang').value = query.get('lang');
                 if (query.has('letters'))
                     do_search(query.get('lang')||'en',query.get('letters'));
+                document.getElementById('letters').focus();
             }
-            window.addEventListener('load', onload, false);
+            window.addEventListener('load', on_load, false);
         </script>
     </head>
     <body>
