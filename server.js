@@ -54,7 +54,7 @@ app.get('/words', (req, res, next) => {
                 sorted[word.length] = [];
             sorted[word.length].push(word);
         }
-        res.status(200).send(JSON.stringify({'letters': letters, 'results': sorted}));
+        res.status(200).send(JSON.stringify({'lang': lang, 'letters': letters, 'results': sorted}));
     });
 });
 app.use((req, res, next) => {
