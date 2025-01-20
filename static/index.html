@@ -41,6 +41,13 @@
                 margin-left: 1em;
                 margin-right: 1em;
             }
+            .result-word a {
+                color: inherit;
+                text-decoration: none;
+            }
+            .result-word a:hover {
+                font-weight: bold;
+            }
         </style>
         <script type="text/javascript">
             function on_clear() {
@@ -67,7 +74,7 @@
                         for (const length in data['results']) {
                             output += '<div class="result-block">\n<div class="result-block-header">'+length+' letters</div>\n<div class="result-block-content">\n';
                             for (const word of data['results'][length]) {
-                                output += '<span class="result-word">'+word+'</span>\n';
+                                output += '<span class="result-word"><a href="https://'+data['lang']+'.wiktionary.org/wiki/'+word+'" target="wiki">'+word+'</a></span>\n';
                             }
                             output += '</div>\n</div>\n';
                         }
